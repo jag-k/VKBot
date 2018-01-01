@@ -1,16 +1,16 @@
-print('bot start load')
 from VKBotLib import *
+import requests.exceptions
 
-#<!==Code body==!>
+# <!==Code body==!>
 
-botVersion = '1.2 Lib+'
+launch = 0 if len(sys.argv) == 1 else int(sys.argv[1])
+
+botVersion = '2.1.0 Lib+'
 version = '🐩 Версия бота: ' + botVersion + '\n📘 Версия библиотеки: ' + libVersion
-#  +'\n📜 Версия "расписания": '+tableVersion+'\n✒ Версия кодировщика: '+ encripterVersion
 
 try:
-    print('bot loaded')
-    print('bot start')
-    sendMe('Bot On 💬\n('+time.asctime()+')')
+    print('bot start; Repeat №%d' % launch)
+    sendMe('Bot On %s💬\n(%s)' % ('(repeat: %d) ' % launch if launch else '', time.asctime()))
     # print(version)
 except BaseException as err:
     input(str(err)+"\n\nPress Enter to exit")
@@ -18,7 +18,7 @@ except BaseException as err:
 time_date = time.asctime()
 while True:
     try:
-        time.sleep(1.4)
+        time.sleep(1.2)
         time_date = time.asctime()
         # print('Date: '+' '.join(TimeDate.split()[1:4]))
         last_msg_id = api.storage.get(**{'key': 'last_msg_id', 'global': 1})
@@ -51,9 +51,9 @@ while True:
                             elif cmdRes == 'version':
                                 sendBack([id] + version[1:], message, noBot=True)
                             elif cmdRes == 'restart':
-                                from os import system, close
-                                system('python3 VKBot.py')
-                                close(1)
+                                from os import system
+                                system('python3 VKBot.py %d' % launch + 1)
+                                sys.exit()
 
     except VkException as err:
         prt = 'Ошибка 🔥: type: %s\n"%s"\n\n%s' % (type(err), err, errorTime(time_date))

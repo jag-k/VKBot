@@ -1,10 +1,11 @@
 __author__ = "Jag_k"
 import time
 
-from VKBotAudioMessage import *
+# from VKBotAudioMessage import *
 from VKBotAPI import *
 from VKBotNote import *
 from color import color
+import sys
 from vk.exceptions import VkException
 # from speaker import Speak, KEY
 
@@ -15,7 +16,7 @@ libVersion = '0.1.7'
 note = [Note("Заметки"), Note("Test", [['lol', False]])]
 noteCount = 1
 admins = [173996641, 316261212]
-tryId = [173996641, 316261212, 366459937, 366930057, 22366930057, 252168745, 443841821]
+tryId = [173996641, 316261212, 366459937, 366930057, 22366930057, 252168745, 443841821, 192238236]
 edit_table = [173996641, 12306618]
 
 helpcmd = 'Укажите, что вы хотите сделать: для этого можете обратиться к справке, выполнив запрос "/? {команда}" или сделав запрос "/?" для получения всей справки о командах.'
@@ -75,11 +76,14 @@ def sendMe(text, noBot=False):
 
 def sendBack(text, message, noBot=False, attachment='', fwd=[]):
     if message['title'] == '' and str(message['uid'])[0] == '-':
-        api.messages.send(**{'peer_id': message['uid'], 'message': sayBot(text, noBot), 'attachment': attachment})
+        api.messages.send(**{'peer_id': message['uid'], 'message': sayBot(text, noBot), 'attachment': attachment,
+                             "forward_messages": ','.join(map(str, fwd))})
     elif message['title'] == '':
-        api.messages.send(**{'user_id': message['uid'], 'message': sayBot(text, noBot), 'attachment': attachment})
+        api.messages.send(**{'user_id': message['uid'], 'message': sayBot(text, noBot), 'attachment': attachment,
+                             "forward_messages": ','.join(map(str, fwd))})
     elif message['title'] != '':
-        api.messages.send(**{'chat_id': message['chat_id'], 'message': sayBot(text, noBot), 'attachment': attachment})
+        api.messages.send(**{'chat_id': message['chat_id'], 'message': sayBot(text, noBot), 'attachment': attachment,
+                             "forward_messages": ','.join(map(str, fwd))})
 
 
 def relevant(message): return '[id'+str(message['uid'])+'|'+api.users.get(**{'user_ids':message['uid']})[0]['first_name']+'], '
@@ -205,9 +209,11 @@ def command(cmd, message):  # 0 == break, 1 == 'complete', 2 == 'version', 3 == 
 
     elif cmd[0] == 'wop':
         from commands.cmd_wop import cmd_wop
-        cmd_wop()
+        return cmd_wop()
 
     else:
         sendBack('Такой команды не существует\n'+helpcmd, message)
     return 'complete'
+
+
 print('lib loaded')

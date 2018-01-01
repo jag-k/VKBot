@@ -3,6 +3,6 @@
   {
     "@!": "sendBack(PARAM, message)",
     "@E": "eval(PARAM)",
-    "@F": "sendBackFwd(**PARAM)"
+    "@F": "sendBack(**eval(PARAM))"
   }
 }

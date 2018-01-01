@@ -9,8 +9,10 @@ _config.yml
 .logs/
 VKBotAudioMessage.py
 speakerKey.py
-VKBotToken.txt
+VKBotToken.json
 vk_config.v2.json
 *.log
 .testDir/
 .directory
+.*
+.*/
