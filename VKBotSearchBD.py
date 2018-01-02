@@ -5,16 +5,23 @@ def search_bd(user_id, shift=10):
     import time
     
     def rec_search_get(age_from, age_to, offset=0, **keys):
-        res: list = api.users.search(q=' '.join([user['first_name'], user['last_name']]),
-                                     offset=offset * 1000,
-                                     sort=0, fields='sex', sex=user['sex'], age_from=age_from, age_to=age_to, count=1000,
-                                     **keys)[1:]
+        try:
+            res: list = api.users.search(q=' '.join([user['first_name'], user['last_name']]),
+                                         offset=offset * 1000,
+                                         sort=0, fields='sex', sex=user['sex'], age_from=age_from, age_to=age_to,
+                                         count=1000, **keys)[1:]
+        except Exception:
+            time.sleep(1)
+            res: list = api.users.search(q=' '.join([user['first_name'], user['last_name']]),
+                                         offset=offset * 1000,
+                                         sort=0, fields='sex', sex=user['sex'], age_from=age_from, age_to=age_to,
+                                         count=1000, **keys)[1:]
         if len(res) < 1000:
             return res
         return res + rec_search_get(age_from, age_to, offset=offset+1, **keys)
 
     def repl(s: str):
-        return ' '.join(int(i) if i.isdigit() else i for i in s.split())
+        return ' '.join(str(int(i)) if i.isdigit() else i for i in s.split())
     
     def date_search(age):
         month = {0: 0, 1: 31, 2: 29, 3: 31, 4: 30, 5: 31, 6: 30, 7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31}
