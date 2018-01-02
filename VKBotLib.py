@@ -4,13 +4,15 @@ import time
 # from VKBotAudioMessage import *
 from VKBotAPI import *
 from VKBotNote import *
+from printLog import PrintLog
 from color import color
 import sys
 from vk.exceptions import VkException
 # from speaker import Speak, KEY
 
-libVersion = '0.1.7'
+libVersion = '0.2.1'
 
+print_log = PrintLog()
 note = [Note("Заметки"), Note("Test", [['lol', False]])]
 noteCount = 1
 admins = [173996641, 316261212]
