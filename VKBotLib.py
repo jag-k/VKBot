@@ -9,8 +9,6 @@ import sys
 from vk.exceptions import VkException
 # from speaker import Speak, KEY
 
-print('lib import done')
-
 libVersion = '0.1.7'
 
 note = [Note("Заметки"), Note("Test", [['lol', False]])]
@@ -146,9 +144,20 @@ def command(cmd, message):  # 0 == break, 1 == 'complete', 2 == 'version', 3 == 
 
     elif cmd[0] == 'connect':
         sendBack("The connection is successful!", message)
+    
+    elif cmd[0] == 'bd':
+        sendBack('Подождите, это займёт некоторое время…', message)
+        from VKBotSearchBD import search_bd
+        bd = search_bd(message['uid'])
+        age = str(bd['age'])
+        age = "%s %s" % (age, 'год' if age[-1] == '1' else ('годa' if age[-1] in range(2, 5) else 'лет'))\
+            if age else "возраст не распозднан"
+        if bd['month'] == 0 and bd['day'] == 0 and bd['year'] == 0:
+            return '@!' + age
+        return "@!Дата рождения: %.2d.%.2d.%.4d (%s)" % (bd['day'], bd['month'], bd['year'], age)
 
-    elif cmd[0] == 'say':
-        sendBack('', message, noBot=True, attachment=audio_message(*cmd[1:], 1))
+    # elif cmd[0] == 'say':
+    #     sendBack('', message, noBot=True, attachment=audio_message(*cmd[1:], 1))
 
     elif cmd[0] == 'note':
         if len(cmd) == 1:
@@ -214,6 +223,3 @@ def command(cmd, message):  # 0 == break, 1 == 'complete', 2 == 'version', 3 == 
     else:
         sendBack('Такой команды не существует\n'+helpcmd, message)
     return 'complete'
-
-
-print('lib loaded')

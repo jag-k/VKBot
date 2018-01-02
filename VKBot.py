@@ -52,7 +52,7 @@ while True:
                                 sendBack([id] + version[1:], message, noBot=True)
                             elif cmdRes == 'restart':
                                 from os import system
-                                system('python3 VKBot.py %d' % launch + 1)
+                                system('python3 VKBot.py %d' % (launch + 1))
                                 sys.exit()
 
     except VkException as err:
