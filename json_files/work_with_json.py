@@ -1,19 +1,19 @@
 import os
 import json
-jsons = {}
+js_params = {}
 
 
-def update_param(params=os.listdir(os.curdir)):
-    for i in params:
+def update_params(cwd='./json_files'):
+    global js_params
+    for i in os.listdir(cwd):
         if os.path.isfile(i) and i.endswith('.json'):
             exec("%s = %s" % (i[:-5], json.load(open(i))))
-            jsons[i[:-5]] = eval(i[:-5])
+            js_params[i[:-5]] = eval(i[:-5])
+    return js_params
 
 
-def add_param(name, value):
-    with open(name+'.json', 'r+') as file:
-        file.write(json.load(value))
-    update_param(name+'.json')
-
-
-update_param()
+if __name__ == '__main__':
+     update_params(os.getcwd())
+else:
+    update_params()
+print("js_params:", js_params)

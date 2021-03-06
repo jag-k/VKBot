@@ -2,9 +2,6 @@ from speakerKey import KEY
 
 
 class Speak:
-    from functools import lru_cache
-
-    @lru_cache(maxsize=1000)
     def __init__(self, text, file_format='mp3', quality='hi', lang='ru-RU', speaker='alyss', speed=1.0,
                  emotion='neutral', key=KEY):
         """
